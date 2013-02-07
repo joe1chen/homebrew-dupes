@@ -21,6 +21,7 @@ class Nginx < Formula
   option 'with-realip', 'Compile with support for Realip module'
   option 'with-upload', 'Compile with support for Upload'
   option 'with-upload-progress', 'Compile with support for Upload Progress module'
+  option 'with-stub-status', 'Compile with support for stub status module'
   skip_clean 'logs'
 
   # Changes default port to 8080
@@ -79,6 +80,7 @@ class Nginx < Formula
     args << "--with-http_realip_module" if build.include? 'with-realip'
     args << upload_install_args if build.include? 'with-upload'
     args << upload_progress_install_args if build.include? 'with-upload-progress'
+    args << "--with-http_stub_status_module" if build.include? 'with-stub-status'
     
     system "./configure", *args
     system "make"
