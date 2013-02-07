@@ -43,9 +43,9 @@ class Nginx < Formula
   def upload_install_args
     `mkdir /tmp/nginx_upload; mkdir /tmp/nginx_upload-progress`
     `curl -o /tmp/nginx_upload.tar.gz http://www.grid.net.ru/nginx/download/nginx_upload_module-2.2.0.tar.gz`
-    `tar xzf /tmp/nginx_upload.tar.gz --directory /tmp/nginx_upload --strip 1`
+    `tar xzfz /tmp/nginx_upload.tar.gz --directory /tmp/nginx_upload --strip 1`
     `curl -o /tmp/nginx_upload-progress.tar.gz https://github.com/downloads/masterzen/nginx-upload-progress-module/nginx_uploadprogress_module-0.9.0.tar.gz`
-    `tar xzf /tmp/nginx_upload-progress.tar.gz  --directory /tmp/nginx_upload-progress --strip 1`
+    `tar xzfz /tmp/nginx_upload-progress.tar.gz  --directory /tmp/nginx_upload-progress --strip 1`
     
     return ["--add-module=/tmp/nginx_upload" "--add-module=/tmp/nginx_upload-progress"]
   end
