@@ -20,7 +20,6 @@ class Nginx < Formula
   option 'with-gzip', 'Compile with support for Gzip static module'
   option 'with-realip', 'Compile with support for Realip module'
   option 'with-upload', 'Compile with support for Upload and Upload Progress module'
-  option 'with-gru', 'Shortcut for --with-gzip, --with-realip, --with-upload'
   skip_clean 'logs'
 
   # Changes default port to 8080
@@ -71,16 +70,9 @@ class Nginx < Formula
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
     
-    if build.include? '--with-gru'
-      args << "--with-http_gzip_static_module"
-      args << "--with-http_realip_module"
-      args << "--add-module=/tmp/nginx_upload"
-      args << "--add-module=/tmp/nginx_upload-progress"
-    else
-      args << "--with-http_gzip_static_module" if build.include? '--with-gzip'
-      args << "--with-http_realip_module" if build.include? '--with-realip'
-      args << upload_install_args if build.include? '--with-upload'
-    end
+    args << "--with-http_gzip_static_module" if build.include? 'with-gzip'
+    args << "--with-http_realip_module" if build.include? 'with-realip'
+    args << upload_install_args if build.include? 'with-upload'
     
     system "./configure", *args
     system "make"
