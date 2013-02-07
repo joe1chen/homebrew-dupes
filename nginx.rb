@@ -19,7 +19,8 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-gzip', 'Compile with support for Gzip static module'
   option 'with-realip', 'Compile with support for Realip module'
-  option 'with-upload', 'Compile with support for Upload and Upload Progress module'
+  option 'with-upload', 'Compile with support for Upload'
+  option 'with-upload-progress', 'Compile with support for Upload Progress module'
   skip_clean 'logs'
 
   # Changes default port to 8080
@@ -41,15 +42,19 @@ class Nginx < Formula
   end
 
   def upload_install_args
-    `mkdir /tmp/nginx_upload; mkdir /tmp/nginx_upload-progress`
+    `mkdir /tmp/nginx_upload`
     `curl -o /tmp/nginx_upload.tar.gz http://www.grid.net.ru/nginx/download/nginx_upload_module-2.2.0.tar.gz`
     `tar xzf /tmp/nginx_upload.tar.gz --directory /tmp/nginx_upload --strip 1`
+    return "--add-module=/tmp/nginx_upload"
+  end
+  
+  def upload_progress_install_args
+    `mkdir /tmp/nginx_upload-progress`
     `curl -L -o /tmp/nginx_upload-progress.tar.gz https://github.com/downloads/masterzen/nginx-upload-progress-module/nginx_uploadprogress_module-0.9.0.tar.gz`
     `tar xzf /tmp/nginx_upload-progress.tar.gz  --directory /tmp/nginx_upload-progress --strip 1`
-    
-    return "--add-module=/tmp/nginx_upload --add-module=/tmp/nginx_upload-progress"
+    return "--add-module=/tmp/nginx_upload-progress"
   end
-
+  
   def install
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
@@ -73,6 +78,7 @@ class Nginx < Formula
     args << "--with-http_gzip_static_module" if build.include? 'with-gzip'
     args << "--with-http_realip_module" if build.include? 'with-realip'
     args << upload_install_args if build.include? 'with-upload'
+    args << upload_progress_install_args if build.include? 'with-upload-progress'
     
     system "./configure", *args
     system "make"
