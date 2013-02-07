@@ -47,7 +47,7 @@ class Nginx < Formula
     `curl -L -o /tmp/nginx_upload-progress.tar.gz https://github.com/downloads/masterzen/nginx-upload-progress-module/nginx_uploadprogress_module-0.9.0.tar.gz`
     `tar xzf /tmp/nginx_upload-progress.tar.gz  --directory /tmp/nginx_upload-progress --strip 1`
     
-    return ["--add-module=/tmp/nginx_upload" "--add-module=/tmp/nginx_upload-progress"]
+    return "--add-module=/tmp/nginx_upload --add-module=/tmp/nginx_upload-progress"
   end
 
   def install
